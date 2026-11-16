@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Prajwal & Dhanya Wedding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #0a0a0a;
+  }
+
+  .page {
+    position: relative;
+    width: 100%; height: 100%;
+  }
+
+  .bg-image {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    z-index: 0;
+  }
+
+  .countdown {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    background: rgba(242, 220, 208, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .countdown.ready { opacity: 1; }
+
+  .cd-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .cd-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: #6b1d35;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .cd-label {
+    font-family: 'Playfair Display', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #6b1d35;
+    margin-top: 2px;
+    font-weight: 700;
+  }
+  .cd-sep {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: #6b1d35;
+    line-height: 1;
+  }
+
+  .hotspot {
+    position: absolute;
+    z-index: 3;
+    cursor: pointer;
+    display: block;
+  }
+
+  .page { animation: fadeIn 0.8s ease-out; }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <img class="bg-image" id="bg" src="images/1.webp" alt="Prajwal & Dhanya Wedding Invitation">
+
+  <div class="countdown" id="countdown">
+    <div class="cd-block">
+      <span class="cd-num" id="days">00</span>
+      <span class="cd-label">Days</span>
+    </div>
+    <span class="cd-sep">:</span>
+    <div class="cd-block">
+      <span class="cd-num" id="hours">00</span>
+      <span class="cd-label">Hours</span>
+    </div>
+    <span class="cd-sep">:</span>
+    <div class="cd-block">
+      <span class="cd-num" id="mins">00</span>
+      <span class="cd-label">Mins</span>
+    </div>
+    <span class="cd-sep">:</span>
+    <div class="cd-block">
+      <span class="cd-num" id="secs">00</span>
+      <span class="cd-label">Secs</span>
+    </div>
+  </div>
+
+  <a class="hotspot" id="hsCta" href="slides.html"></a>
+  <a class="hotspot" id="hsLoc" href="https://www.google.com/maps/search/P.G.M.+Srigandha+Palace+Bellari+Road+Hebbal+Bengaluru+560092" target="_blank" rel="noopener"></a>
+  <a class="hotspot" id="hsEvents" href="slides.html"></a>
+  <a class="hotspot" id="hsRsvp" href="slides.html"></a>
+</div>
+
+<script>
+  const IMG_W = 969, IMG_H = 1624;
+
+  // Regions in original image coordinates (fraction of image dimensions)
+  const REGIONS = {
+    countdown: { top: 0.605, bottom: 0.735 },
+    cta:       { top: 0.73, bottom: 0.77, left: 0.25, right: 0.75 },
+    location:  { top: 0.80,  bottom: 0.88,  left: 0.05, right: 0.42 },
+    events:    { top: 0.80,  bottom: 0.86,  left: 0.44, right: 0.62 },
+    rsvp:      { top: 0.80,  bottom: 0.86,  left: 0.64, right: 0.82 }
+  };
+
+  function imgToViewport(imgFracX, imgFracY) {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const imgRatio = IMG_W / IMG_H;
+    const vpRatio = vw / vh;
+    let scale, offsetX = 0, offsetY = 0;
+    if (vpRatio > imgRatio) {
+      scale = vw / IMG_W;
+      offsetY = 0; // object-position: center top
+    } else {
+      scale = vh / IMG_H;
+      offsetX = (vw - IMG_W * scale) / 2;
+    }
+    return {
+      x: imgFracX * IMG_W * scale + offsetX,
+      y: imgFracY * IMG_H * scale + offsetY
+    };
+  }
+
+  function positionElements() {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const cd = document.getElementById('countdown');
+
+    // Countdown overlay
+    const cdTop = imgToViewport(0.5, REGIONS.countdown.top);
+    const cdBot = imgToViewport(0.5, REGIONS.countdown.bottom);
+    const cdLeft = imgToViewport(0.15, REGIONS.countdown.top);
+    const cdRight = imgToViewport(0.85, REGIONS.countdown.top);
+    const cdHeight = cdBot.y - cdTop.y;
+    const cdWidth = cdRight.x - cdLeft.x;
+    const fontSize = cdHeight * 0.38;
+    const labelSize = cdHeight * 0.10;
+
+    cd.style.top = cdTop.y + 'px';
+    cd.style.left = '50%';
+    cd.style.transform = 'translateX(-50%)';
+    cd.style.width = cdWidth + 'px';
+    cd.style.height = cdHeight + 'px';
+    cd.style.padding = (cdHeight * 0.08) + 'px ' + (cdWidth * 0.04) + 'px';
+    cd.style.justifyContent = 'center';
+    cd.style.alignItems = 'center';
+
+    document.querySelectorAll('.cd-num').forEach(el => el.style.fontSize = fontSize + 'px');
+    document.querySelectorAll('.cd-sep').forEach(el => {
+      el.style.fontSize = fontSize + 'px';
+      el.style.padding = '0 ' + (fontSize * 0.1) + 'px';
+    });
+    document.querySelectorAll('.cd-label').forEach(el => el.style.fontSize = labelSize + 'px');
+    document.querySelectorAll('.cd-block').forEach(el => el.style.minWidth = (cdWidth / 5.5) + 'px');
+
+    cd.classList.add('ready');
+
+    // Hotspots
+    function setHotspot(id, region) {
+      const el = document.getElementById(id);
+      const tl = imgToViewport(region.left || 0, region.top);
+      const br = imgToViewport(region.right || 1, region.bottom);
+      el.style.top = tl.y + 'px';
+      el.style.left = tl.x + 'px';
+      el.style.width = (br.x - tl.x) + 'px';
+      el.style.height = (br.y - tl.y) + 'px';
+    }
+    setHotspot('hsCta', REGIONS.cta);
+    setHotspot('hsLoc', REGIONS.location);
+    setHotspot('hsEvents', REGIONS.events);
+    setHotspot('hsRsvp', REGIONS.rsvp);
+  }
+
+  const bg = document.getElementById('bg');
+  if (bg.complete) positionElements();
+  else bg.addEventListener('load', positionElements);
+  window.addEventListener('resize', positionElements);
+
+  // Countdown timer
+  const weddingDate = new Date('2026-12-03T08:15:00+05:30').getTime();
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    const diff = weddingDate - Date.now();
+    if (diff <= 0) {
+      document.getElementById('days').textContent = '00';
+      document.getElementById('hours').textContent = '00';
+      document.getElementById('mins').textContent = '00';
+      document.getElementById('secs').textContent = '00';
+      return;
+    }
+    document.getElementById('days').textContent = pad(Math.floor(diff / 864e5));
+    document.getElementById('hours').textContent = pad(Math.floor((diff % 864e5) / 36e5));
+    document.getElementById('mins').textContent = pad(Math.floor((diff % 36e5) / 6e4));
+    document.getElementById('secs').textContent = pad(Math.floor((diff % 6e4) / 1e3));
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# Allow only the invitation files
+!.gitignore
+!index.html
+!slides.html
+!images/
+!images/*.webp
+!.claude/
+!.claude/launch.json
