@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Prajwal & Dhanya - Wedding Events</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
@@ -91,49 +91,6 @@
     width: 70%;
     height: 7%;
     border-radius: 30px;
-  }
-
-  /* Cover + overlay text for Muhurtham slide paragraph */
-  .inviting-cover {
-    position: absolute;
-    z-index: 4;
-    background: radial-gradient(ellipse at 50% 45%, rgb(255,238,208) 0%, rgb(252,227,180) 100%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .inviting-cover.ready { opacity: 1; }
-  .inviting-text {
-    position: absolute;
-    z-index: 5;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 400;
-    font-style: italic;
-    color: rgb(132, 76, 61);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .inviting-text.ready { opacity: 1; }
-
-  /* Cover to hide the URL text in the image */
-  .url-cover {
-    position: absolute;
-    z-index: 4;
-    top: 57.3%;
-    left: 18%;
-    width: 64%;
-    height: 3%;
-    background: linear-gradient(180deg,
-      rgb(93,2,10) 0%,
-      rgb(93,2,10) 40%,
-      rgb(180,120,50) 75%,
-      rgb(245,197,99) 100%
-    );
-    border-radius: 0 0 8px 8px;
   }
 
   /* Thank You slide - venue address */
@@ -285,8 +242,6 @@
   <div class="slide" data-i="2">
     <img src="images/4.webp" alt="Muhurtham">
     <span class="tag">Muhurtham</span>
-    <div class="inviting-cover" id="invitingCover"></div>
-    <div class="inviting-text" id="invitingText"><span>To share the joy of our</span><span>wedding ceremony as we being our</span><span>new journey together.</span></div>
     <a class="hotspot hs-muhurtham-loc" href="https://www.google.com/maps/search/P.G.M.+Srigandha+Palace+Bellari+Road+Hebbal+Bengaluru+560092" target="_blank" rel="noopener"></a>
   </div>
 
@@ -295,7 +250,6 @@
     <img src="images/5.webp" alt="Thank You">
     <span class="tag">Thank You</span>
     <a class="hotspot hs-thankyou-btn" href="https://www.google.com/maps/search/P.G.M.+Srigandha+Palace+Bellari+Road+Hebbal+Bengaluru+560092" target="_blank" rel="noopener"></a>
-    <div class="url-cover"></div>
     <a class="hotspot hs-thankyou-addr" href="https://www.google.com/maps/search/P.G.M.+Srigandha+Palace+Bellari+Road+Hebbal+Bengaluru+560092" target="_blank" rel="noopener"></a>
   </div>
 
@@ -386,41 +340,6 @@
   // Auto-hide hint
   setTimeout(() => hint.classList.add('gone'), 4000);
 
-  // Position cover + overlay text on Muhurtham slide (all 3 lines)
-  function positionInvitingCover() {
-    const img = document.querySelector('.slide[data-i="2"] img');
-    const cover = document.getElementById('invitingCover');
-    const text = document.getElementById('invitingText');
-    if (!img || !img.naturalWidth) return;
-    const imgW = img.naturalWidth, imgH = img.naturalHeight;
-    const vw = window.innerWidth, vh = window.innerHeight;
-    const imgRatio = imgW / imgH, vpRatio = vw / vh;
-    let scale, offsetX = 0;
-    if (vpRatio > imgRatio) { scale = vw / imgW; }
-    else { scale = vh / imgH; offsetX = (vw - imgW * scale) / 2; }
-    const L = 0.255, R = 0.745, T = 0.328, B = 0.410;
-    const left = L * imgW * scale + offsetX;
-    const top = T * imgH * scale;
-    const w = (R - L) * imgW * scale;
-    const h = (B - T) * imgH * scale;
-    cover.style.left = left + 'px';
-    cover.style.top = top + 'px';
-    cover.style.width = w + 'px';
-    cover.style.height = h + 'px';
-    cover.classList.add('ready');
-    text.style.left = left + 'px';
-    text.style.top = top + 'px';
-    text.style.width = w + 'px';
-    text.style.height = h + 'px';
-    const lineH = h / 3;
-    text.style.fontSize = (lineH * 0.62) + 'px';
-    text.querySelectorAll('span').forEach(s => s.style.lineHeight = lineH + 'px');
-    text.classList.add('ready');
-  }
-  const muhImg = document.querySelector('.slide[data-i="2"] img');
-  if (muhImg.complete) positionInvitingCover();
-  else muhImg.addEventListener('load', positionInvitingCover);
-  window.addEventListener('resize', positionInvitingCover);
 </script>
 </body>
 </html>
