@@ -79,6 +79,28 @@
     display: block;
   }
 
+  #hsCta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: #6b1d35;
+    background: rgba(242, 220, 208, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 2px solid rgba(107, 29, 53, 0.4);
+    border-radius: 30px;
+    white-space: nowrap;
+  }
+
+  .cta-cover {
+    position: absolute;
+    z-index: 2;
+  }
+
   .page { animation: fadeIn 0.8s ease-out; }
   @keyframes fadeIn {
     from { opacity: 0; }
@@ -113,7 +135,8 @@
     </div>
   </div>
 
-  <a class="hotspot" id="hsCta" href="slides.html"></a>
+  <div class="cta-cover" id="ctaCover"></div>
+  <a class="hotspot" id="hsCta" href="slides.html">Click here to continue &rarr;</a>
   <a class="hotspot" id="hsLoc" href="https://www.google.com/maps/search/P.G.M.+Srigandha+Palace+Bellari+Road+Hebbal+Bengaluru+560092" target="_blank" rel="noopener"></a>
   <a class="hotspot" id="hsEvents" href="slides.html"></a>
   <a class="hotspot" id="hsRsvp" href="slides.html"></a>
@@ -193,6 +216,23 @@
       el.style.height = (br.y - tl.y) + 'px';
     }
     setHotspot('hsCta', REGIONS.cta);
+    const ctaEl = document.getElementById('hsCta');
+    const ctaH = parseFloat(ctaEl.style.height);
+    ctaEl.style.fontSize = (ctaH * 0.45) + 'px';
+    ctaEl.style.borderRadius = (ctaH * 0.5) + 'px';
+
+    const cover = document.getElementById('ctaCover');
+    const covTl = imgToViewport(0.2, REGIONS.cta.top);
+    const covBr = imgToViewport(0.8, REGIONS.cta.bottom);
+    cover.style.top = covTl.y + 'px';
+    cover.style.left = covTl.x + 'px';
+    cover.style.width = (covBr.x - covTl.x) + 'px';
+    cover.style.height = (covBr.y - covTl.y) + 'px';
+    cover.style.background = 'rgba(242, 220, 208, 0.7)';
+    cover.style.backdropFilter = 'blur(8px)';
+    cover.style.webkitBackdropFilter = 'blur(8px)';
+    cover.style.borderRadius = (ctaH * 0.5) + 'px';
+
     setHotspot('hsLoc', REGIONS.location);
     setHotspot('hsEvents', REGIONS.events);
     setHotspot('hsRsvp', REGIONS.rsvp);
