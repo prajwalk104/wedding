@@ -93,6 +93,16 @@
     border-radius: 30px;
   }
 
+  /* Cover to hide "Inviting you to " on Muhurtham slide */
+  .inviting-cover {
+    position: absolute;
+    z-index: 4;
+    background: rgb(253, 232, 195);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .inviting-cover.ready { opacity: 1; }
+
   /* Cover to hide the URL text in the image */
   .url-cover {
     position: absolute;
@@ -259,6 +269,7 @@
   <div class="slide" data-i="2">
     <img src="images/4.webp" alt="Muhurtham">
     <span class="tag">Muhurtham</span>
+    <div class="inviting-cover" id="invitingCover"></div>
     <a class="hotspot hs-muhurtham-loc" href="https://www.google.com/maps/search/P.G.M.+Srigandha+Palace+Bellari+Road+Hebbal+Bengaluru+560092" target="_blank" rel="noopener"></a>
   </div>
 
@@ -357,6 +368,29 @@
 
   // Auto-hide hint
   setTimeout(() => hint.classList.add('gone'), 4000);
+
+  // Position "Inviting you to " cover on Muhurtham slide
+  function positionInvitingCover() {
+    const img = document.querySelector('.slide[data-i="2"] img');
+    const cover = document.getElementById('invitingCover');
+    if (!img || !img.naturalWidth) return;
+    const imgW = img.naturalWidth, imgH = img.naturalHeight;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const imgRatio = imgW / imgH, vpRatio = vw / vh;
+    let scale, offsetX = 0;
+    if (vpRatio > imgRatio) { scale = vw / imgW; }
+    else { scale = vh / imgH; offsetX = (vw - imgW * scale) / 2; }
+    const L = 0.278, R = 0.467, T = 0.330, B = 0.352;
+    cover.style.left = (L * imgW * scale + offsetX) + 'px';
+    cover.style.top = (T * imgH * scale) + 'px';
+    cover.style.width = ((R - L) * imgW * scale) + 'px';
+    cover.style.height = ((B - T) * imgH * scale) + 'px';
+    cover.classList.add('ready');
+  }
+  const muhImg = document.querySelector('.slide[data-i="2"] img');
+  if (muhImg.complete) positionInvitingCover();
+  else muhImg.addEventListener('load', positionInvitingCover);
+  window.addEventListener('resize', positionInvitingCover);
 </script>
 </body>
 </html>
