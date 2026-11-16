@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Prajwal & Dhanya - Wedding Events</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
@@ -93,7 +93,7 @@
     border-radius: 30px;
   }
 
-  /* Cover + overlay text for Muhurtham slide first line */
+  /* Cover + overlay text for Muhurtham slide paragraph */
   .inviting-cover {
     position: absolute;
     z-index: 4;
@@ -105,12 +105,15 @@
   .inviting-text {
     position: absolute;
     z-index: 5;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
     font-style: italic;
     color: rgb(132, 76, 61);
     text-align: center;
-    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -283,7 +286,7 @@
     <img src="images/4.webp" alt="Muhurtham">
     <span class="tag">Muhurtham</span>
     <div class="inviting-cover" id="invitingCover"></div>
-    <div class="inviting-text" id="invitingText">To share the joy of our</div>
+    <div class="inviting-text" id="invitingText"><span>To share the joy of our</span><span>wedding ceremony as we begin our</span><span>new journey together.</span></div>
     <a class="hotspot hs-muhurtham-loc" href="https://www.google.com/maps/search/P.G.M.+Srigandha+Palace+Bellari+Road+Hebbal+Bengaluru+560092" target="_blank" rel="noopener"></a>
   </div>
 
@@ -383,7 +386,7 @@
   // Auto-hide hint
   setTimeout(() => hint.classList.add('gone'), 4000);
 
-  // Position cover + overlay text on Muhurtham slide
+  // Position cover + overlay text on Muhurtham slide (all 3 lines)
   function positionInvitingCover() {
     const img = document.querySelector('.slide[data-i="2"] img');
     const cover = document.getElementById('invitingCover');
@@ -395,7 +398,7 @@
     let scale, offsetX = 0;
     if (vpRatio > imgRatio) { scale = vw / imgW; }
     else { scale = vh / imgH; offsetX = (vw - imgW * scale) / 2; }
-    const L = 0.265, R = 0.725, T = 0.327, B = 0.355;
+    const L = 0.255, R = 0.745, T = 0.328, B = 0.410;
     const left = L * imgW * scale + offsetX;
     const top = T * imgH * scale;
     const w = (R - L) * imgW * scale;
@@ -409,8 +412,9 @@
     text.style.top = top + 'px';
     text.style.width = w + 'px';
     text.style.height = h + 'px';
-    text.style.lineHeight = h + 'px';
-    text.style.fontSize = (h * 0.72) + 'px';
+    const lineH = h / 3;
+    text.style.fontSize = (lineH * 0.62) + 'px';
+    text.querySelectorAll('span').forEach(s => s.style.lineHeight = lineH + 'px');
     text.classList.add('ready');
   }
   const muhImg = document.querySelector('.slide[data-i="2"] img');
