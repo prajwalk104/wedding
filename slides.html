@@ -89,15 +89,6 @@
     will-change: transform, opacity;
   }
 
-  /* URL cover on Thank You slide */
-  .url-cover {
-    position: absolute;
-    z-index: 4;
-    background: linear-gradient(to bottom, rgb(93,4,9), rgb(70,6,5));
-    pointer-events: none;
-    border-radius: 0 0 20px 20px;
-  }
-
   /* Invisible clickable hotspots over image location text */
   .hotspot {
     position: absolute;
@@ -286,7 +277,6 @@
   <!-- Slide 3: Thank You -->
   <div class="slide" data-i="3">
     <img src="images/5.webp" alt="Thank You">
-    <div class="url-cover" id="urlCover"></div>
     <span class="tag">Thank You</span>
     <a class="hotspot hs-thankyou-btn" href="https://www.google.com/maps/search/P.G.M.+Srigandha+Palace+Bellari+Road+Hebbal+Bengaluru+560092" target="_blank" rel="noopener"></a>
     <a class="hotspot hs-thankyou-addr" href="https://www.google.com/maps/search/P.G.M.+Srigandha+Palace+Bellari+Road+Hebbal+Bengaluru+560092" target="_blank" rel="noopener"></a>
@@ -378,31 +368,6 @@
 
   // Auto-hide hint
   setTimeout(() => hint.classList.add('gone'), 4000);
-
-  // Position URL cover on Thank You slide
-  function positionUrlCover() {
-    const slide = document.querySelector('.slide[data-i="3"]');
-    const img = slide.querySelector('img');
-    const cover = document.getElementById('urlCover');
-    const natW = img.naturalWidth || 969;
-    const natH = img.naturalHeight || 1624;
-    const cW = slide.offsetWidth;
-    const cH = slide.offsetHeight;
-    const scX = cW / natW;
-    const scY = cH / natH;
-    const sc = Math.max(scX, scY);
-    const dispW = natW * sc;
-    const dispH = natH * sc;
-    const offX = (cW - dispW) / 2;
-    const offY = 0; // object-position: center top
-    cover.style.left = (offX + 0.18 * dispW) + 'px';
-    cover.style.top = (offY + 0.573 * dispH) + 'px';
-    cover.style.width = (0.64 * dispW) + 'px';
-    cover.style.height = (0.020 * dispH) + 'px';
-  }
-  window.addEventListener('resize', positionUrlCover);
-  document.querySelector('.slide[data-i="3"] img').addEventListener('load', positionUrlCover);
-  positionUrlCover();
 
   // ---- Floating Petals ----
   const petalColors = [
