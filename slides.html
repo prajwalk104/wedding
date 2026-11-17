@@ -95,6 +95,7 @@
     z-index: 4;
     background: linear-gradient(to bottom, rgb(93,4,9), rgb(70,6,5));
     pointer-events: none;
+    border-radius: 0 0 20px 20px;
   }
 
   /* Invisible clickable hotspots over image location text */
@@ -394,10 +395,10 @@
     const dispH = natH * sc;
     const offX = (cW - dispW) / 2;
     const offY = 0; // object-position: center top
-    cover.style.left = (offX + 0.17 * dispW) + 'px';
-    cover.style.top = (offY + 0.575 * dispH) + 'px';
-    cover.style.width = (0.66 * dispW) + 'px';
-    cover.style.height = (0.021 * dispH) + 'px';
+    cover.style.left = (offX + 0.18 * dispW) + 'px';
+    cover.style.top = (offY + 0.573 * dispH) + 'px';
+    cover.style.width = (0.64 * dispW) + 'px';
+    cover.style.height = (0.020 * dispH) + 'px';
   }
   window.addEventListener('resize', positionUrlCover);
   document.querySelector('.slide[data-i="3"] img').addEventListener('load', positionUrlCover);
